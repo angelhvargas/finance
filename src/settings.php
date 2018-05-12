@@ -15,5 +15,17 @@ return [
             'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
         ],
+
+        //Eloquent settings (DB)
+        'db' => [
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'database' => 'finance',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+        ],
     ],
 ];
