@@ -3,6 +3,21 @@
 
 $container = $app->getContainer();
 
+$app = new \Slim\App($container);
+
+//added cache
+$container['cache'] = function () {
+    return new \Slim\HttpCache\CacheProvider();
+};
+
+//csfr protection
+$container['csrf'] = function ($c) {
+    return new \Slim\Csrf\Guard;
+};
+
+//rebind app
+$app->add(new \Slim\HttpCache\Cache('public', 86400));
+
 // view renderer
 $container['renderer'] = function ($c) {
     $settings = $c->get('settings')['renderer'];
@@ -16,4 +31,13 @@ $container['logger'] = function ($c) {
     $logger->pushProcessor(new Monolog\Processor\UidProcessor());
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
+};
+
+//eloquent
+$container['db'] = function ($container) {
+    $capsule = new \Illuminate\Database\Capsule\Manager;
+    $capsule->addConnection($container['settings']['db']);
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
+    return $capsule;
 };
