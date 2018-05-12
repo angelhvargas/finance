@@ -2,7 +2,6 @@
 // DIC configuration
 
 $container = $app->getContainer();
-
 $app = new \Slim\App($container);
 
 //added cache
@@ -34,10 +33,11 @@ $container['logger'] = function ($c) {
 };
 
 //eloquent
-$container['db'] = function ($container) {
-    $capsule = new \Illuminate\Database\Capsule\Manager;
-    $capsule->addConnection($container['settings']['db']);
+$capsule = new \Illuminate\Database\Capsule\Manager;
+    $capsule->addConnection($container['settings']['db'], "default");
     $capsule->setAsGlobal();
     $capsule->bootEloquent();
+
+$container['db'] = function ($container) use ($capsule) {
     return $capsule;
 };
