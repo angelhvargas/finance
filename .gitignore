@@ -3,3 +3,5 @@
 !/logs/README.md
 *.lock
 /.vscode/
+/node_modules/
+/storage/cache/views/*
