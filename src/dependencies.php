@@ -4,23 +4,36 @@
 $container = $app->getContainer();
 $app = new \Slim\App($container);
 
-//added cache
+//added cache cache container
 $container['cache'] = function () {
     return new \Slim\HttpCache\CacheProvider();
 };
 
-//csfr protection
+//register csfr protection filter/middleware
 $container['csrf'] = function ($c) {
     return new \Slim\Csrf\Guard;
 };
 
-//rebind app
+//register Http cache
 $app->add(new \Slim\HttpCache\Cache('public', 86400));
 
-// view renderer
+// register view renderer
 $container['renderer'] = function ($c) {
     $settings = $c->get('settings')['renderer'];
     return new Slim\Views\PhpRenderer($settings['template_path']);
+};
+
+// Register twig view
+$container['view'] = function ($container) {
+    $view = new \Slim\Views\Twig($container['settings']['view']['template_path'], [
+        'cache' => $container['settings']['view']['cache_path']
+    ]);
+
+    // Instantiate and add Slim specific extension
+    $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
+    $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
+
+    return $view;
 };
 
 // monolog
