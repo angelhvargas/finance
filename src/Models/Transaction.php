@@ -5,6 +5,7 @@ class Transaction extends BaseModel
     protected $table = 'transactions';
     protected $primaryKey = 'id';
     protected $fillable = ['type', 'amount', 'interest', 'fee', 'date'];
+    protected $hidden = ['user_id'];
     
 
     public function user() 
@@ -19,7 +20,7 @@ class Transaction extends BaseModel
 
     public function repayment()
     {
-        return $this->belongsTo('\App\Model\Repayment');
+        return $this->belongsTo('\App\Model\Repayment', 'repayment_id');
     }
     
 }

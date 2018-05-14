@@ -19,19 +19,21 @@ class Loan extends BaseModel
         "accepted_on"
     ];
 
+    protected $hidden = ['borrower_id'];
+
     public function user() 
     {
-        $this->belongsTo("App\Models\User", "borrower_id");
+        return $this->belongsTo("App\Models\User", "borrower_id", "id");
     }
 
     public function repayments()
     {
-        $this->hasMany("App\Models\Repayment", "loan_id");
+        return $this->hasMany("App\Models\Repayment", "loan_id");
     }
 
     public function bids()
     {
-        $this->hasMany("App\Models\Bid", "loan_id");
+        return $this->hasMany("App\Models\Bid", "loan_id");
     }
 
 }
