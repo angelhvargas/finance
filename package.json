@@ -1,0 +1,30 @@
+{
+  "name": "finance",
+  "version": "1.0.0",
+  "description": "",
+  "main": "public/index.php",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "composer test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angelhvargas/finance.git"
+  },
+  "author": "Angel Vargas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/angelhvargas/finance/issues"
+  },
+  "homepage": "https://github.com/angelhvargas/finance#readme",
+  "dependencies": {
+    "angular": "1.7.0",
+    "angular-route": "1.7.0",
+    "bootstrap": "^4.1.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
