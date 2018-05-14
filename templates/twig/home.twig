@@ -1,0 +1,23 @@
+{% extends "layouts/base.twig" %}
+
+{% block title %} Home {% endblock %}
+{% block head %}
+    {{ parent() }}
+
+{% endblock %}
+{% block body %} 
+<div ng-app="app">
+    <h1>Hello</h1>
+    <h2 class="title">Component Router</h2>
+    <app></app>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+{{parent()}}
+<script src="https://unpkg.com/@angular/router@0.2.0/angular1/angular_1_router.js"></script>
+<script src="app/app.js"></script>
+<script src="app/components/users.js"></script>
+<script src="app/components/crisis.js"></script>
+<script src="app/components/dialog.js"></script>
+{% endblock %}
