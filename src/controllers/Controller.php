@@ -1,10 +1,7 @@
 <?php namespace App\Controllers;
 
-use \Slim\Http\Request;
-use \Slim\Http\Response;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 abstract class Controller 
 {
@@ -28,7 +25,7 @@ abstract class Controller
      * @var \Slim\Container
      */
     protected $app;
-    private $view;
+    protected $view;
     
     /**
      * Controller constructor
@@ -40,6 +37,7 @@ abstract class Controller
         $this->log = $app['logger'];
         $this->request = $app['request'];
         $this->app = $app;
+        $this->view = $app['view'];
     }
 
     /**
