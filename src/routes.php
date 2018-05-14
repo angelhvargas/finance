@@ -4,23 +4,49 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
+use App\Controllers\LoanController;
+use App\Controllers\LenderController;
 // Routes
 
 
 $app->group('/api', function() use ($app) {
     
-    $app->group('/user/{id:[0-9]+}', function () use ($app) {
+    $app->group('/user', function () use ($app) {
         
-        $this->map(['GET', 'DELETE', 'PATCH', 'PUT'], '', function ($request, $response, $args) use ($app){
-
-            // Find, delete, patch or replace user identified by $args['id']
-        })->setName('user');
-
-        
-        //return the user's loans
-        $this->get('/loans', UserController::class.':withLoans' )->setName('user-loans');
-
+        // route group related with a particular user
+        $app->group('/{id:[0-9]+}', function() use ($app) {
+            $app->get('', UserController::class.':find');    
+            $this->get('/loans', UserController::class.':withLoans' )->setName('user-loans');
+        });        
+        //default endpoint returns all the users
+        $app->get('', UserController::class.':index');        
     });
+
+    $app->group('/loan', function() use ($app){
+        $this->get('/all', LoanController::class.':loansReport')->setName('loans-report');
+        //$this->get('/{id:[0-9]+}', LoanController::class.':find');
+        //$this->patch('/{id:[0-9]+}', LoanController::class.':update');
+        //$this->delete('/{id:[0-9]+}', LoanController::class.':delete');
+        //$this->post('', LoanController::class.':save');
+    });
+
+    $app->group('/bid', function() use ($app){
+        $this->get('/all', BidController::class.':bidsReport')->setName('bids-report');
+        //$this->get('/all/valid', BidController::class.':bidsReportValid')->setName('bids-report-valid');
+        //$this->get('/{id:[0-9]+}', BidController::class.':find')->setName('bids-find');
+        //$this->patch('/{id:[0-9]+}', BidController::class.':update')->setName('bids-update');
+        //$this->delete('/{id:[0-9]+}', BidController::class.':delete')->setName('bids-delete');
+        //$this->post('', BidController::class.':save');
+    });
+
+    $app->group('/lender', function() use ($app){
+        $this->get('/all', LenderController::class.':all')->setName('lenders-report');
+        $this->get('/{id:[0-9]+}', LenderController::class.':find')->setName('lenders-find');
+        //$this->patch('/{id:[0-9]+}', LenderController::class.':update')->setName('bids-update');
+        //$this->delete('/{id:[0-9]+}', LenderController::class.':delete')->setName('bids-delete');
+        //$this->post('', LenderController::class.':save');
+    });
+    
     
 });
 
