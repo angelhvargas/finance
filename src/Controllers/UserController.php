@@ -1,9 +1,10 @@
 <?php namespace App\Controllers;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 use App\Models\User;
+
 /**
  * UserController class
  */
@@ -29,7 +30,7 @@ class UserController extends Controller
      * @param Psr\Http\Message\ResponseInterface  $response
      * @return void
      */
-    public function create(Request $request, Response $response) 
+    public function create(Request $request, Response $response, $args) 
     {
         
         if (false) {
@@ -46,23 +47,49 @@ class UserController extends Controller
         }
     }
 
+    public function find(Request $request, Response $response, $args) 
+    {
+        $user_id = isset($args['id']) ? $args['id'] : false;
+
+        try {
+            
+            if (!$user_id) throw new Exception("id parameter missing");
+
+            $user = User::find($user_id);
+
+        } catch (\Exception $e) {
+            $this->log->error($e->getMessage());
+        }
+        return $response->withJson(
+            $user
+                ->with('loans')
+                ->where('id', $user_id)
+                ->get()
+                ->toArray()
+            );
+    }
+
     public function withLoans(Request $request, Response $response, $params) 
     {
         
-        var_dump(User::lenders());
-        die();
+        $user_id = isset($args['id']) ? $args['id'] : false;
+        
         try {
-            if ( isset($params['id']) ) {
-                $user_id = $params['id'];
-                $user_with_loans = User::find($user_id)->withLoans();
-                var_dump($user_with_loans);
-            } else {
-                throw new \RuntimeException('missing parameter id');
-            }
+            if (!$user_id) throw new Exception("id parameter missing");
 
-        } catch(\Exception $e) {
-            $this->log->error($e->getMessage());
+            $user = User::find($user_id);
+
+        } catch (\Exception $e) {
+            $this->log->error('Error trying to fetch user data');
+            return $response->withJson(['Error' => $e->getMessage()], 400);
         }
+        return $response->withJson(
+            $user
+                ->with('loans')
+                ->where('id', $user_id)
+                ->get()
+                ->toJson()
+        );
     }
 
     public function allLenders() 
