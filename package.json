@@ -21,7 +21,7 @@
   "homepage": "https://github.com/angelhvargas/finance#readme",
   "dependencies": {
     "angular": "1.7.0",
-    "angular-route": "1.7.0",
+    "angular-route": "1.8.0",
     "bootstrap": "^4.1.1"
   },
   "devDependencies": {
